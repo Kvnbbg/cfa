@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFA - Caraïbes France Asie | Chaîne d'approvisionnement écologique</title>
+    <meta name="description" content="Plateforme de commerce équitable reliant les Caraïbes, la France et l'Asie. Soutenez les producteurs locaux contre les grandes surfaces.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/static/assets/cfa_logo.svg">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/animations.css">
+    <link rel="stylesheet" href="/static/css/themes.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-animation">
+            <div class="cfa-logo-animated">
+                <img src="/static/assets/cfa_logo.svg" alt="CFA Logo" class="logo-spin">
+            </div>
+            <div class="loading-text">
+                <span class="typing-text" data-text="Chargement de votre expérience CFA..."></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <!-- Logo -->
+            <div class="nav-logo">
+                <img src="/static/assets/cfa_logo.svg" alt="CFA" class="logo">
+                <span class="logo-text">CFA</span>
+            </div>
+
+            <!-- Language Selector -->
+            <div class="language-selector">
+                <button class="lang-btn" data-lang="fr">🇫🇷</button>
+                <button class="lang-btn" data-lang="en">🇺🇸</button>
+                <button class="lang-btn" data-lang="ko">🇰🇷</button>
+                <button class="lang-btn" data-lang="zh">🇨🇳</button>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="nav-links">
+                <a href="#home" class="nav-link active" data-i18n="home">Accueil</a>
+                <a href="#products" class="nav-link" data-i18n="products">Produits</a>
+                <a href="#recipes" class="nav-link" data-i18n="recipes">Recettes</a>
+                <a href="#about" class="nav-link" data-i18n="about">À propos</a>
+                <a href="#contact" class="nav-link" data-i18n="contact">Contact</a>
+            </div>
+
+            <!-- User Actions -->
+            <div class="nav-actions">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="theme-toggle" title="Changer de thème">
+                    <i class="fas fa-sun light-icon"></i>
+                    <i class="fas fa-moon dark-icon"></i>
+                </button>
+
+                <!-- Search -->
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Rechercher..." data-i18n-placeholder="search_placeholder">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+
+                <!-- Cart -->
+                <button class="cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </button>
+
+                <!-- User Menu -->
+                <div class="user-menu">
+                    <button class="user-btn">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <div class="user-dropdown">
+                        <a href="#login" data-i18n="login">Connexion</a>
+                        <a href="#register" data-i18n="register">Inscription</a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <div class="hero-particles"></div>
+            <div class="hero-waves"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="title-line" data-i18n="welcome_message">Bienvenue sur Caraïbes-France-Asie</span>
+                    <span class="title-highlight">CFA</span>
+                </h1>
+                <p class="hero-subtitle" data-i18n="tagline">
+                    Chaîne d'approvisionnement de la ferme à la table, enracinée dans l'écologie
+                </p>
+                <p class="hero-description" data-i18n="support_local">
+                    Soutenez les producteurs locaux contre les grandes surfaces comme Carrefour et Leclerc
+                </p>
+                
+                <!-- CTA Buttons -->
+                <div class="hero-cta">
+                    <button class="btn btn-primary btn-animated" id="easy-signup-btn">
+                        <span data-i18n="register">Inscription Facile</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-animated">
+                        <span data-i18n="products">Découvrir</span>
+                        <i class="fas fa-compass"></i>
+                    </button>
+                </div>
+
+                <!-- Trust Indicators -->
+                <div class="trust-indicators">
+                    <div class="trust-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span data-i18n="quality_guarantee">Qualité garantie</span>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-leaf"></i>
+                        <span>Écologique</span>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-handshake"></i>
+                        <span data-i18n="fair_trade">Commerce équitable</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Visual -->
+            <div class="hero-visual">
+                <div class="product-showcase">
+                    <div class="product-card floating">
+                        <img src="/static/assets/icon_spices.png" alt="Épices">
+                        <span>Épices authentiques</span>
+                    </div>
+                    <div class="product-card floating" style="animation-delay: 0.5s;">
+                        <img src="/static/assets/icon_food.png" alt="Produits frais">
+                        <span>Produits frais</span>
+                    </div>
+                    <div class="product-card floating" style="animation-delay: 1s;">
+                        <img src="/static/assets/icon_herbs.png" alt="Herbes médicinales">
+                        <span>Herbes médicinales</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <div class="scroll-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Easy Signup Modal (Dark Pattern Optimized) -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content signup-modal">
+            <div class="modal-header">
+                <h2>Rejoignez la révolution CFA</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            
+            <div class="signup-benefits">
+                <div class="benefit-item">
+                    <i class="fas fa-gift"></i>
+                    <span>10€ offerts à l'inscription</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-shipping-fast"></i>
+                    <span>Livraison gratuite dès 30€</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-star"></i>
+                    <span>Accès aux produits exclusifs</span>
+                </div>
+            </div>
+
+            <form class="signup-form" id="easy-signup-form">
+                <div class="form-group">
+                    <input type="email" placeholder="Votre email" required class="form-input">
+                    <i class="fas fa-envelope form-icon"></i>
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" placeholder="Mot de passe" required class="form-input">
+                    <i class="fas fa-lock form-icon"></i>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" checked>
+                        <span class="checkmark"></span>
+                        <span class="checkbox-text">Recevoir les offres exclusives</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">
+                    <span>Créer mon compte</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <div class="social-signup">
+                    <p>Ou inscrivez-vous avec :</p>
+                    <div class="social-buttons">
+                        <button class="social-btn google">
+                            <i class="fab fa-google"></i>
+                            Google
+                        </button>
+                        <button class="social-btn facebook">
+                            <i class="fab fa-facebook"></i>
+                            Facebook
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="signup-footer">
+                <p>Déjà membre ? <a href="#login">Connectez-vous</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Pourquoi choisir CFA ?</h2>
+                <p class="section-subtitle">Une alternative éthique aux grandes surfaces</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up">
+                    <div class="feature-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h3>Circuit Direct</h3>
+                    <p>Du producteur au consommateur, sans intermédiaire. Éliminez les marges excessives des supermarchés.</p>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Écologique</h3>
+                    <p>Produits bio, commerce équitable, emballages durables. Préservez la planète avec chaque achat.</p>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe-asia"></i>
+                    </div>
+                    <h3>Multiculturel</h3>
+                    <p>Découvrez les saveurs authentiques des Caraïbes, de France, de Corée, d'Inde et de Chine.</p>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Prix Intelligents</h3>
+                    <p>Algorithmes de tarification équitable. Économisez jusqu'à 30% par rapport aux grandes surfaces.</p>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3>Gamification</h3>
+                    <p>Gagnez des points, débloquez des badges, obtenez des récompenses à chaque achat responsable.</p>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Sécurisé</h3>
+                    <p>Conforme ANSSI.fr, surveillance 24/7, protection des données. Votre sécurité est notre priorité.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Support Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Contact & Support</h2>
+                <p class="section-subtitle">Connectez-vous avec Kevin Marville et l'équipe CFA</p>
+            </div>
+
+            <div class="contact-grid">
+                <!-- Kevin Marville Profile -->
+                <div class="contact-card founder-card">
+                    <div class="founder-avatar">
+                        <img src="/static/assets/kevin-avatar.jpg" alt="Kevin Marville" class="avatar">
+                        <div class="founder-badge">
+                            <i class="fas fa-crown"></i>
+                            <span>Fondateur</span>
+                        </div>
+                    </div>
+                    
+                    <div class="founder-info">
+                        <h3>Kevin Marville</h3>
+                        <p class="founder-title">Fondateur & CEO de CFA</p>
+                        <p class="founder-bio">
+                            Passionné par le commerce équitable et l'écologie, Kevin connecte les producteurs 
+                            des Caraïbes, de France et d'Asie pour créer une chaîne d'approvisionnement durable.
+                        </p>
+                        
+                        <div class="founder-links">
+                            <a href="https://linkedin.com/in/kevin-marville" target="_blank" class="social-link linkedin">
+                                <i class="fab fa-linkedin"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="mailto:kevin@cfa-platform.com" class="social-link email">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email</span>
+                            </a>
+                            <a href="https://twitter.com/kevin_marville" target="_blank" class="social-link twitter">
+                                <i class="fab fa-twitter"></i>
+                                <span>Twitter</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Support Links -->
+                <div class="contact-card support-card">
+                    <h3>Soutenez le Projet</h3>
+                    <p>Aidez-nous à révolutionner le commerce équitable</p>
+                    
+                    <div class="support-links">
+                        <a href="https://buymeacoffee.com/kevinmarville" target="_blank" class="support-btn coffee">
+                            <i class="fas fa-coffee"></i>
+                            <span>Buy Me a Coffee</span>
+                            <small>Offrez un café à Kevin</small>
+                        </a>
+                        
+                        <a href="https://ko-fi.com/kevinmarville" target="_blank" class="support-btn kofi">
+                            <i class="fas fa-heart"></i>
+                            <span>Ko-fi</span>
+                            <small>Soutenez sur Ko-fi</small>
+                        </a>
+                        
+                        <a href="https://patreon.com/cfaplatform" target="_blank" class="support-btn patreon">
+                            <i class="fab fa-patreon"></i>
+                            <span>Patreon</span>
+                            <small>Abonnement mensuel</small>
+                        </a>
+                        
+                        <a href="https://github.com/sponsors/kevinmarville" target="_blank" class="support-btn github">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub Sponsors</span>
+                            <small>Sponsoring développement</small>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Stripe Payment Links -->
+                <div class="contact-card payment-card">
+                    <h3>Paiements Sécurisés</h3>
+                    <p>Powered by Stripe</p>
+                    
+                    <div class="payment-options">
+                        <button class="payment-btn donation" data-stripe-link="donate">
+                            <i class="fas fa-donate"></i>
+                            <span>Faire un don</span>
+                            <small>Montant libre</small>
+                        </button>
+                        
+                        <button class="payment-btn subscription" data-stripe-link="subscribe">
+                            <i class="fas fa-crown"></i>
+                            <span>Abonnement Premium</span>
+                            <small>9.99€/mois</small>
+                        </button>
+                        
+                        <button class="payment-btn product" data-stripe-link="product">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>Acheter des produits</span>
+                            <small>Catalogue complet</small>
+                        </button>
+                    </div>
+                    
+                    <div class="payment-security">
+                        <img src="https://js.stripe.com/v3/fingerprinted/img/stripe-badge-transparent.png" alt="Stripe" class="stripe-badge">
+                        <p>Paiements sécurisés SSL 256-bit</p>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="contact-card form-card">
+                    <h3>Nous Contacter</h3>
+                    <form class="contact-form">
+                        <div class="form-group">
+                            <input type="text" placeholder="Votre nom" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Votre email" required>
+                        </div>
+                        <div class="form-group">
+                            <select required>
+                                <option value="">Sujet</option>
+                                <option value="support">Support technique</option>
+                                <option value="partnership">Partenariat</option>
+                                <option value="producer">Devenir producteur</option>
+                                <option value="other">Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Votre message" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <span>Envoyer</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="/static/assets/cfa_logo.svg" alt="CFA">
+                        <span>CFA</span>
+                    </div>
+                    <p>Révolutionnons ensemble le commerce équitable</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Produits</h4>
+                    <ul>
+                        <li><a href="#">Épices</a></li>
+                        <li><a href="#">Herbes médicinales</a></li>
+                        <li><a href="#">Produits frais</a></li>
+                        <li><a href="#">Boissons</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Centre d'aide</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Livraison</a></li>
+                        <li><a href="#">Retours</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="#">Conditions d'utilisation</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                        <li><a href="#">RGPD</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 CFA - Caraïbes France Asie. Tous droits réservés.</p>
+                <p>Créé avec ❤️ par Kevin Marville | Serveur basé en France 🇫🇷</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/animations.js"></script>
+    <script src="/static/js/i18n.js"></script>
+    <script src="/static/js/gamification.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/static/js/payments.js"></script>
+</body>
+</html>
+

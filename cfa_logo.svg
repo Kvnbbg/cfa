@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .logo-text { font-family: 'Arial', sans-serif; font-weight: bold; }
+      .main-text { font-size: 48px; fill: #1E3A8A; }
+      .sub-text { font-size: 16px; fill: #374151; }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="400" fill="#F9FAFB"/>
+  
+  <!-- House outline -->
+  <path d="M100 120 L200 60 L300 120 L300 220 L100 220 Z" 
+        fill="none" 
+        stroke="#1E3A8A" 
+        stroke-width="6" 
+        stroke-linejoin="round"/>
+  
+  <!-- Palm leaf -->
+  <g transform="translate(130, 140)">
+    <path d="M0 0 Q10 -15 25 -10 Q35 -5 30 10 Q25 20 15 15 Q5 10 0 0" 
+          fill="#059669"/>
+    <path d="M5 5 Q15 -10 30 -5 Q40 0 35 15 Q30 25 20 20 Q10 15 5 5" 
+          fill="#059669"/>
+    <path d="M10 10 Q20 -5 35 0 Q45 5 40 20 Q35 30 25 25 Q15 20 10 10" 
+          fill="#059669"/>
+  </g>
+  
+  <!-- Sun/wave element -->
+  <circle cx="220" cy="150" r="25" fill="#FF6B47"/>
+  
+  <!-- Waves -->
+  <path d="M120 190 Q140 180 160 190 Q180 200 200 190 Q220 180 240 190 Q260 200 280 190" 
+        fill="none" 
+        stroke="#1E3A8A" 
+        stroke-width="4" 
+        stroke-linecap="round"/>
+  
+  <path d="M120 200 Q140 190 160 200 Q180 210 200 200 Q220 190 240 200 Q260 210 280 200" 
+        fill="none" 
+        stroke="#1E3A8A" 
+        stroke-width="4" 
+        stroke-linecap="round"/>
+  
+  <!-- CFA Text -->
+  <text x="200" y="280" text-anchor="middle" class="logo-text main-text">CFA</text>
+  
+  <!-- Full name -->
+  <text x="200" y="310" text-anchor="middle" class="logo-text sub-text">Caraïbes-France-Asie</text>
+  
+  <!-- Tagline -->
+  <text x="200" y="330" text-anchor="middle" class="sub-text" style="font-size: 12px; fill: #6B7280;">
+    Supply Chain • Ecology • Premium Products
+  </text>
+</svg>
+
