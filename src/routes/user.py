@@ -3,6 +3,8 @@ from functools import wraps
 
 from flask import Blueprint, jsonify, request, g
 
+from werkzeug.security import check_password_hash
+
 from ..models import User
 
 user_bp = Blueprint('user', __name__)
@@ -31,6 +33,7 @@ def require_auth(func):
 @user_bp.route('/login', methods=['POST'])
 def login():
     """Login endpoint."""
+
     data = request.get_json(silent=True) or {}
 
     email = data.get('email')
@@ -46,6 +49,7 @@ def login():
     token = user.generate_token()
     if isinstance(token, bytes):  # PyJWT < 2.0 returns bytes
         token = token.decode('utf-8')
+        
     return jsonify({
         'token': token,
         'user': {
