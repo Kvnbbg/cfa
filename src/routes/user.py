@@ -1,23 +1,47 @@
 """User routes for CFA API."""
-from flask import Blueprint, jsonify, request
-from ..models import db, User
+from functools import wraps
+
+from flask import Blueprint, jsonify, request, g
 from werkzeug.security import check_password_hash
 
+from ..models import User
+
 user_bp = Blueprint('user', __name__)
+
+
+def require_auth(func):
+    """Decorator ensuring that the requester provides a valid JWT token."""
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        auth_header = request.headers.get('Authorization', '')
+        if not auth_header.startswith('Bearer '):
+            return jsonify({'error': 'Authorization header missing or malformed'}), 401
+
+        token = auth_header.split(' ', 1)[1].strip()
+        user = User.verify_token(token) if token else None
+        if not user:
+            return jsonify({'error': 'Invalid or expired token'}), 401
+
+        g.current_user = user
+        return func(*args, **kwargs)
+
+    return wrapper
+
 
 @user_bp.route('/login', methods=['POST'])
 def login():
     """Login endpoint."""
     data = request.get_json()
-    
+
     if not data or not data.get('email') or not data.get('password'):
         return jsonify({'error': 'Missing email or password'}), 400
-        
+
     user = User.query.filter_by(email=data['email']).first()
     if not user or not check_password_hash(user.password_hash, data['password']):
         return jsonify({'error': 'Invalid email or password'}), 401
-    
-    token = user.generate_auth_token()
+
+    token = user.generate_token()
     return jsonify({
         'token': token,
         'user': {
@@ -29,22 +53,10 @@ def login():
         }
     })
 
+
 @user_bp.route('/profile', methods=['GET'])
+@require_auth
 def get_profile():
     """Get user profile endpoint."""
-    # TODO: Add auth middleware
-    user_id = request.args.get('user_id')
-    if not user_id:
-        return jsonify({'error': 'Missing user_id'}), 400
-        
-    user = User.query.get(user_id)
-    if not user:
-        return jsonify({'error': 'User not found'}), 404
-    
-    return jsonify({
-        'id': user.id,
-        'email': user.email,
-        'first_name': user.first_name,
-        'last_name': user.last_name,
-        'role': user.role.value
-    })
+    user = g.current_user
+    return jsonify(user.to_dict()), 200
