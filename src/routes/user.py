@@ -3,34 +3,7 @@ from functools import wraps
 
 from flask import Blueprint, jsonify, request, g
 
-from ..models import User
 
-user_bp = Blueprint('user', __name__)
-
-
-def require_auth(func):
-    """Decorator ensuring that the requester provides a valid JWT token."""
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        auth_header = request.headers.get('Authorization', '')
-        if not auth_header.startswith('Bearer '):
-            return jsonify({'error': 'Authorization header missing or malformed'}), 401
-
-        token = auth_header.split(' ', 1)[1].strip()
-        user = User.verify_token(token) if token else None
-        if not user:
-            return jsonify({'error': 'Invalid or expired token'}), 401
-
-        g.current_user = user
-        return func(*args, **kwargs)
-
-    return wrapper
-
-
-@user_bp.route('/login', methods=['POST'])
-def login():
-    """Login endpoint."""
     data = request.get_json(silent=True) or {}
 
     email = data.get('email')
