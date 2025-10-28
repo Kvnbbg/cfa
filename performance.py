@@ -450,7 +450,7 @@ def cached(ttl: int = 3600):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             # Créer une clé de cache
-            key = hashlib.md5(
+            key = hashlib.sha256(
                 f"{func.__name__}:{str(args)}:{str(sorted(kwargs.items()))}".encode()
             ).hexdigest()
             

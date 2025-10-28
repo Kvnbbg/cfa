@@ -83,7 +83,7 @@ class DuplicateChecker:
                 content = f.read()
             
             # Hash du contenu
-            content_hash = hashlib.md5(content.encode()).hexdigest()
+            content_hash = hashlib.sha256(content.encode()).hexdigest()
             self.file_hashes[str(file_path)] = {
                 'hash': content_hash,
                 'size': len(content),
@@ -114,7 +114,7 @@ class DuplicateChecker:
                         'name': node.name,
                         'line': node.lineno,
                         'args': [arg.arg for arg in node.args.args],
-                        'body_hash': hashlib.md5(ast.dump(node).encode()).hexdigest()
+                        'body_hash': hashlib.sha256(ast.dump(node).encode()).hexdigest()
                     })
                 
                 elif isinstance(node, ast.ClassDef):
@@ -124,7 +124,7 @@ class DuplicateChecker:
                         'name': node.name,
                         'line': node.lineno,
                         'methods': [n.name for n in node.body if isinstance(n, ast.FunctionDef)],
-                        'body_hash': hashlib.md5(ast.dump(node).encode()).hexdigest()
+                        'body_hash': hashlib.sha256(ast.dump(node).encode()).hexdigest()
                     })
                     
         except SyntaxError as e:
