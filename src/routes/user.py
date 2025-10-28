@@ -2,6 +2,7 @@
 from functools import wraps
 
 from flask import Blueprint, jsonify, request, g
+
 from werkzeug.security import check_password_hash
 
 from ..models import User
@@ -32,16 +33,23 @@ def require_auth(func):
 @user_bp.route('/login', methods=['POST'])
 def login():
     """Login endpoint."""
-    data = request.get_json()
 
-    if not data or not data.get('email') or not data.get('password'):
+    data = request.get_json(silent=True) or {}
+
+    email = data.get('email')
+    password = data.get('password')
+
+    if not email or not password:
         return jsonify({'error': 'Missing email or password'}), 400
 
-    user = User.query.filter_by(email=data['email']).first()
-    if not user or not check_password_hash(user.password_hash, data['password']):
+    user = User.query.filter_by(email=email).first()
+    if not user or not user.check_password(password):
         return jsonify({'error': 'Invalid email or password'}), 401
 
     token = user.generate_token()
+    if isinstance(token, bytes):  # PyJWT < 2.0 returns bytes
+        token = token.decode('utf-8')
+        
     return jsonify({
         'token': token,
         'user': {
