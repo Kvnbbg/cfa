@@ -66,8 +66,13 @@ def create_app():
         if static_folder_path is None:
             return "Static folder not configured", 404
 
-        if path != "" and os.path.exists(os.path.join(static_folder_path, path)):
-            return send_from_directory(static_folder_path, path)
+        if path != "":
+            requested_path = os.path.normpath(os.path.join(static_folder_path, path))
+            # Ensure the normalized requested_path is within static_folder_path
+            if requested_path.startswith(static_folder_path):
+                if os.path.exists(requested_path):
+                    # Only serve if within static folder
+                    return send_from_directory(static_folder_path, path)
         else:
             index_path = os.path.join(static_folder_path, 'index.html')
             if os.path.exists(index_path):
