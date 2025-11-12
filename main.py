@@ -1,3 +1,4 @@
+import os
 from src import create_app
 
 # Création de l'instance de l'application
