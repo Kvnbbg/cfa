@@ -1,0 +1,152 @@
+/* Styles principaux pour l'expérience CFA.
+   Pensés pour offrir une lecture claire, des zones cliquables généreuses
+   et une hiérarchie visuelle nette même lorsque les assets avancés sont absents. */
+
+:root {
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --radius: 12px;
+  --max-width: 1200px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary, #ffffff);
+  color: var(--text-primary, #111827);
+  line-height: 1.6;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-overlay, rgba(255, 255, 255, 0.92));
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-primary, #e5e7eb);
+}
+
+.nav-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.nav-links, .nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.nav-link {
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--text-secondary, #4b5563);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--text-primary, #111827);
+  background: var(--bg-tertiary, #f8fafc);
+}
+
+.hero {
+  padding: 120px var(--space-4) 80px;
+  background: var(--gradient-hero, linear-gradient(135deg, #2D5A27, #FF6B47 50%, #1E3A8A));
+  color: #fff;
+}
+
+.hero-content {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 3vw, 3rem);
+  margin: 0 0 var(--space-3);
+}
+
+.hero-description {
+  margin: 0 0 var(--space-4);
+  max-width: 600px;
+}
+
+.btn {
+  border: none;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--gradient-primary, linear-gradient(135deg, #2D5A27, #FF6B47));
+  color: #fff;
+  box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1));
+}
+
+.btn-secondary {
+  background: #fff;
+  color: var(--text-primary, #111827);
+  border: 1px solid var(--border-primary, #e5e7eb);
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--border-focus, #2563eb);
+  outline-offset: 2px;
+}
+
+.section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 80px var(--space-4);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: var(--gradient-card, linear-gradient(145deg, #ffffff, #f8fafc));
+  border: 1px solid var(--border-primary, #e5e7eb);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.08));
+}
+
+.card h3 {
+  margin-top: 0;
+  margin-bottom: var(--space-2);
+  font-size: 1.1rem;
+}
+
+.footer {
+  background: var(--bg-secondary, #f3f4f6);
+  padding: 40px var(--space-4);
+  text-align: center;
+  border-top: 1px solid var(--border-primary, #e5e7eb);
+}
+
+@media (max-width: 900px) {
+  .nav-container, .hero-content {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links, .nav-actions {
+    flex-wrap: wrap;
+  }
+}
