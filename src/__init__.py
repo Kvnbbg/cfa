@@ -12,7 +12,12 @@ from .models import (
 
 def create_app():
     """Factory pour créer l'application Flask"""
-    app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
+    static_dir = os.path.join(os.path.dirname(__file__), 'static')
+    app = Flask(
+        __name__,
+        static_folder=static_dir,
+        static_url_path='/static'
+    )
 
     # Configuration
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'cfa-dev-secret-key-2025')
@@ -66,19 +71,18 @@ def create_app():
         if static_folder_path is None:
             return "Static folder not configured", 404
 
-        if path != "":
-            requested_path = os.path.normpath(os.path.join(static_folder_path, path))
-            # Ensure the normalized requested_path is within static_folder_path
-            if requested_path.startswith(static_folder_path):
-                if os.path.exists(requested_path):
-                    # Only serve if within static folder
-                    return send_from_directory(static_folder_path, path)
-        else:
-            index_path = os.path.join(static_folder_path, 'index.html')
-            if os.path.exists(index_path):
-                return send_from_directory(static_folder_path, 'index.html')
-            else:
-                return "index.html not found", 404
+        # Normaliser le chemin demandé et éviter toute échappée du répertoire statique
+        requested_path = os.path.normpath(os.path.join(static_folder_path, path)) if path else None
+        index_path = os.path.join(static_folder_path, 'index.html')
+
+        if path and requested_path.startswith(static_folder_path) and os.path.exists(requested_path):
+            return send_from_directory(static_folder_path, path)
+
+        if os.path.exists(index_path):
+            # Fallback SPA-friendly pour garantir une navigation résiliente
+            return send_from_directory(static_folder_path, 'index.html')
+
+        return "index.html not found", 404
 
     @app.route('/health')
     def health_check():
