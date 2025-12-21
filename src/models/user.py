@@ -1,9 +1,19 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask import current_app, has_app_context
 from werkzeug.security import generate_password_hash, check_password_hash
 from src.models.base import BaseModel, UserRole, db
 import jwt
 from datetime import datetime, timedelta
 import os
+
+DEFAULT_SECRET_KEY = 'cfa-dev-secret-key-2025'
+
+
+def _get_secret_key():
+    """Fetch the SECRET_KEY from Flask config when possible, with a safe fallback."""
+    if has_app_context():
+        return current_app.config.get('SECRET_KEY', DEFAULT_SECRET_KEY)
+    return os.environ.get('SECRET_KEY', DEFAULT_SECRET_KEY)
 
 class User(BaseModel):
     """Modèle utilisateur avec authentification et profils"""
@@ -57,13 +67,13 @@ class User(BaseModel):
             'role': self.role.value,
             'exp': datetime.utcnow() + timedelta(seconds=expires_in)
         }
-        return jwt.encode(payload, os.environ.get('SECRET_KEY', 'dev-secret'), algorithm='HS256')
+        return jwt.encode(payload, _get_secret_key(), algorithm='HS256')
     
     @staticmethod
     def verify_token(token):
         """Vérifie et décode un token JWT"""
         try:
-            payload = jwt.decode(token, os.environ.get('SECRET_KEY', 'dev-secret'), algorithms=['HS256'])
+            payload = jwt.decode(token, _get_secret_key(), algorithms=['HS256'])
             return User.query.get(payload['user_id'])
         except jwt.ExpiredSignatureError:
             return None
@@ -106,4 +116,3 @@ class User(BaseModel):
     
     def __repr__(self):
         return f'<User {self.email}>'
-
