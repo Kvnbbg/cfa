@@ -105,7 +105,7 @@ Visit `http://127.0.0.1:5000` for demo.
 Use `.env` file (create from `.env.example`):
 ```env
 FLASK_ENV=development
-SECRET_KEY=your-secret-key
+SECRET_KEY=your-secret-key  # Used for Flask sessions + JWT signing; keep consistent across services.
 DATABASE_URL=sqlite:///cfa.db  # Or postgresql://...
 AUDIO_ENABLED=True
 DEFAULT_SOUND=rain.mp3

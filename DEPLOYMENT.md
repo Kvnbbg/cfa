@@ -19,22 +19,15 @@ Environment variables
 
 - `PORT` - provided by Railway automatically.
 - `DATABASE_URL` - optional. By default the app uses a local SQLite file under `src/database/app.db`.
-  - To use Postgres on Railway, set `DATABASE_URL` to Railway Postgres and update `app.config['SQLALCHEMY_DATABASE_URI']` to use it (see notes below).
-- `SECRET_KEY` - set for production.
+  - To use Postgres on Railway, set `DATABASE_URL` to Railway Postgres.
+- `SECRET_KEY` - set for production. Used for Flask sessions and JWT signing; keep it stable across deployments to avoid token invalidation.
 - `FLASK_DEBUG` - set to `false` in production.
 
 Database notes
 
 - By default, `src.create_app()` configures SQLite:
   `sqlite:////absolute/path/to/src/database/app.db` (relative path under the app directory).
-- To use Railway Postgres, set `DATABASE_URL` in Railway variables and update `src/__init__.py` before `db.init_app(app)`:
-
-```python
-# inside create_app before db.init_app(app)
-database_url = os.environ.get('DATABASE_URL')
-if database_url:
-    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
-```
+- To use Railway Postgres, set `DATABASE_URL` in Railway variables. The app already prioritizes `DATABASE_URL` when present.
 
 Healthcheck
 
@@ -60,5 +53,3 @@ python main.py
 # run with gunicorn (production-like)
 gunicorn -b 0.0.0.0:5000 "main:app"
 ```
-
-If you want, I can add a small change to `src/__init__.py` to respect `DATABASE_URL` automatically and commit it. Reply `yes` to proceed and I'll make that edit and run a quick local smoke test.
