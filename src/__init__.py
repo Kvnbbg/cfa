@@ -20,7 +20,11 @@ def create_app():
     )
 
     # Configuration
-    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'cfa-dev-secret-key-2025')
+    env = os.environ.get('FLASK_ENV', os.environ.get('ENV', 'development')).lower()
+    secret_key = os.environ.get('SECRET_KEY', 'cfa-dev-secret-key-2025')
+    if env == 'production' and secret_key == 'cfa-dev-secret-key-2025':
+        raise RuntimeError('SECRET_KEY must be set for production environments')
+    app.config['SECRET_KEY'] = secret_key
     # Prefer DATABASE_URL when provided (e.g., Railway Postgres). Otherwise fall back to local sqlite file.
     database_url = os.environ.get('DATABASE_URL')
     if database_url:
@@ -34,7 +38,16 @@ def create_app():
     }
 
     # Activation de CORS pour permettre les requêtes cross-origin
-    CORS(app, origins="*")
+    cors_origins = os.environ.get('CORS_ORIGINS', '')
+    if cors_origins:
+        origins = [origin.strip() for origin in cors_origins.split(',') if origin.strip()]
+    else:
+        origins = ['*'] if env != 'production' else []
+    CORS(app, origins=origins)
+
+    app.config['SESSION_COOKIE_HTTPONLY'] = True
+    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+    app.config['SESSION_COOKIE_SECURE'] = env == 'production'
 
     # Initialisation de la base de données
     db.init_app(app)
@@ -47,7 +60,6 @@ def create_app():
         db.create_all()
 
         # Création d'un utilisateur admin par défaut si nécessaire (only when not in production)
-        env = os.environ.get('FLASK_ENV', os.environ.get('ENV', 'development'))
         if env != 'production':
             admin = User.query.filter_by(email='admin@cfa.com').first()
             if not admin:
@@ -62,6 +74,27 @@ def create_app():
                 db.session.add(admin)
                 db.session.commit()
                 print("Utilisateur admin créé: admin@cfa.com / admin123")
+
+    @app.after_request
+    def set_security_headers(response):
+        """Add baseline security headers to all responses."""
+        csp = (
+            "default-src 'self'; "
+            "script-src 'self' https://js.stripe.com; "
+            "style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; "
+            "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; "
+            "img-src 'self' data:; "
+            "connect-src 'self' https://api.stripe.com; "
+            "frame-src https://js.stripe.com https://hooks.stripe.com"
+        )
+        response.headers.setdefault('Content-Security-Policy', csp)
+        response.headers.setdefault('X-Content-Type-Options', 'nosniff')
+        response.headers.setdefault('X-Frame-Options', 'DENY')
+        response.headers.setdefault('Referrer-Policy', 'strict-origin-when-cross-origin')
+        response.headers.setdefault('Permissions-Policy', 'geolocation=(), microphone=(), camera=()')
+        if env == 'production':
+            response.headers.setdefault('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+        return response
 
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
