@@ -8,6 +8,7 @@
   --space-4: 1rem;
   --radius: 12px;
   --max-width: 1200px;
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body {
@@ -40,6 +41,23 @@ body {
   display: flex;
   align-items: center;
   gap: var(--space-3);
+}
+
+.mobile-menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-2);
+}
+
+.mobile-menu-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text-primary, #111827);
+  margin: 4px 0;
+  transition: transform 0.2s ease;
 }
 
 .nav-link {
@@ -80,6 +98,41 @@ body {
   max-width: 600px;
 }
 
+.impact-stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.impact-card {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  min-width: 160px;
+  backdrop-filter: blur(6px);
+  display: grid;
+  gap: 0.35rem;
+}
+
+.impact-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
+
+.impact-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.impact-unit {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
 .btn {
   border: none;
   padding: var(--space-3) var(--space-4);
@@ -104,6 +157,35 @@ body {
 .btn:focus-visible {
   outline: 3px solid var(--border-focus, #2563eb);
   outline-offset: 2px;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 40;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-content {
+  max-width: 520px;
+  width: 100%;
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
 }
 
 .section {
@@ -132,6 +214,217 @@ body {
   font-size: 1.1rem;
 }
 
+.supply-dashboard {
+  margin-top: 2.5rem;
+  padding: 2rem;
+  border-radius: calc(var(--radius) * 1.5);
+  background: var(--bg-secondary, #f8fafc);
+  border: 1px solid var(--border-primary, #e5e7eb);
+  display: grid;
+  gap: 1.5rem;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.status-pill {
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--success-color, #10B981);
+  font-weight: 600;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.dashboard-card {
+  background: var(--bg-primary, #ffffff);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-primary, #e5e7eb);
+  padding: 1.25rem;
+  display: grid;
+  gap: 1rem;
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.08));
+}
+
+.braking-display {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.braking-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bg-tertiary, #f1f5f9);
+  overflow: hidden;
+}
+
+.braking-fill {
+  display: block;
+  height: 100%;
+  width: 45%;
+  background: linear-gradient(90deg, #10B981, #F59E0B, #EF4444);
+  transition: width 0.4s var(--ease-spring);
+}
+
+.braking-meta {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.range-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.brake-range {
+  width: 100%;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.toggle-input {
+  position: absolute;
+  opacity: 0;
+}
+
+.toggle-slider {
+  width: 44px;
+  height: 24px;
+  background: var(--bg-tertiary, #f1f5f9);
+  border-radius: 999px;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.toggle-slider::after {
+  content: '';
+  width: 18px;
+  height: 18px;
+  background: var(--bg-primary, #ffffff);
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.3s ease;
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0,0,0,0.2));
+}
+
+.toggle-input:checked + .toggle-slider {
+  background: rgba(59, 130, 246, 0.4);
+}
+
+.toggle-input:checked + .toggle-slider::after {
+  transform: translateX(20px);
+}
+
+.toggle-text {
+  font-size: 0.9rem;
+}
+
+.meter {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.meter-track {
+  height: 8px;
+  background: var(--bg-tertiary, #f1f5f9);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.meter-fill {
+  display: block;
+  height: 100%;
+  background: var(--gradient-primary, linear-gradient(135deg, #2D5A27, #FF6B47));
+  transition: width 0.4s var(--ease-spring);
+}
+
+.meter-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.chip-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.chip {
+  border: 1px solid var(--border-primary, #e5e7eb);
+  background: var(--bg-secondary, #f8fafc);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.chip.active {
+  background: var(--primary-color, #2D5A27);
+  color: var(--text-inverse, #ffffff);
+}
+
+.timeline {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.timeline-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--secondary-color, #FF6B47);
+  margin-top: 0.3rem;
+}
+
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-primary, #ffffff);
+  border: 1px solid var(--border-primary, #e5e7eb);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg, 0 10px 20px rgba(0,0,0,0.15));
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .footer {
   background: var(--bg-secondary, #f3f4f6);
   padding: 40px var(--space-4);
@@ -148,5 +441,28 @@ body {
 
   .nav-links, .nav-actions {
     flex-wrap: wrap;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-open .nav-links {
+    display: flex;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-flex;
+  }
+
+  .impact-stats {
+    width: 100%;
+  }
+
+  .toast {
+    right: 1rem;
+    left: 1rem;
   }
 }

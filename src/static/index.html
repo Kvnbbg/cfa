@@ -147,6 +147,24 @@
                         <span data-i18n="fair_trade">Commerce équitable</span>
                     </div>
                 </div>
+
+                <div class="impact-stats" data-animate="rise">
+                    <div class="impact-card">
+                        <span class="impact-label">CO₂ évité</span>
+                        <span class="impact-value" data-counter="128">0</span>
+                        <span class="impact-unit">kg</span>
+                    </div>
+                    <div class="impact-card">
+                        <span class="impact-label">Producteurs actifs</span>
+                        <span class="impact-value" data-counter="46">0</span>
+                        <span class="impact-unit">réseaux</span>
+                    </div>
+                    <div class="impact-card">
+                        <span class="impact-label">Livraisons/24h</span>
+                        <span class="impact-value" data-counter="214">0</span>
+                        <span class="impact-unit">trajets</span>
+                    </div>
+                </div>
             </div>
 
             <!-- Hero Visual -->
@@ -323,6 +341,94 @@
             <div class="card">
                 <h3>Traçabilité responsable</h3>
                 <p>Visualisez l'impact carbone et la conformité des fournisseurs partenaires.</p>
+            </div>
+        </div>
+
+        <div class="supply-dashboard" data-animate="rise">
+            <div class="dashboard-header">
+                <div>
+                    <h3>Tableau de conduite logistique</h3>
+                    <p>Interactions temps réel pour piloter la sécurité, l'énergie et les conditions extrêmes.</p>
+                </div>
+                <span class="status-pill pulse">En direct</span>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h4>Whiteout braking display</h4>
+                    <p>Simulation du freinage en visibilité réduite pour sécuriser les convois.</p>
+                    <div class="braking-display">
+                        <div class="braking-bar">
+                            <span class="braking-fill" data-brake-fill></span>
+                        </div>
+                        <div class="braking-meta">
+                            <span class="brake-value" data-brake-value>45%</span>
+                            <span class="brake-state" data-brake-state>Stabilisé</span>
+                        </div>
+                    </div>
+                    <label class="range-label" for="brake-range">Pression de freinage</label>
+                    <input id="brake-range" class="brake-range" type="range" min="0" max="100" value="45">
+                    <label class="toggle">
+                        <input type="checkbox" class="toggle-input" data-whiteout-toggle>
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-text">Mode whiteout</span>
+                    </label>
+                    <button class="btn btn-secondary btn-animated brake-boost" type="button">
+                        <i class="fas fa-bolt"></i>
+                        Stabiliser
+                    </button>
+                </div>
+
+                <div class="dashboard-card">
+                    <h4>Énergie & durabilité</h4>
+                    <p>Optimisation automatique pour réduire l'empreinte carbone.</p>
+                    <div class="meter">
+                        <div class="meter-track">
+                            <span class="meter-fill" style="width: 72%;"></span>
+                        </div>
+                        <div class="meter-meta">
+                            <span>Score vert</span>
+                            <strong>72%</strong>
+                        </div>
+                    </div>
+                    <div class="chip-group">
+                        <button class="chip" type="button" data-chip="eco">Eco-priorité</button>
+                        <button class="chip" type="button" data-chip="balance">Équilibré</button>
+                        <button class="chip" type="button" data-chip="speed">Vitesse</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h4>Rythme des expéditions</h4>
+                    <p>Visibilité sur les flux entrants/sortants avec alertes.</p>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <span class="timeline-dot"></span>
+                            <div>
+                                <strong>08:30</strong>
+                                <p>Conteneurs refroidis - route Caraïbes</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-dot"></span>
+                            <div>
+                                <strong>11:15</strong>
+                                <p>Réacheminement express - hubs France</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-dot"></span>
+                            <div>
+                                <strong>14:10</strong>
+                                <p>Départ maritime - corridor Asie</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-animated" type="button" data-alert-btn>
+                        <i class="fas fa-bell"></i>
+                        Activer les alertes
+                    </button>
+                </div>
             </div>
         </div>
     </section>
