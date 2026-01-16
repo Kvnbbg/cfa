@@ -198,6 +198,15 @@ tox  # If tox.ini configured
   # Procfile: web: gunicorn app:app
   git push heroku main
   ```
+- **Vercel (easy deploy)**:
+  [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/kvnbbg/cfa)
+  1. Import the repository in Vercel.
+  2. Ensure `vercel.json` is present (already in this repo).
+  3. Set environment variables in Vercel:
+     - `SECRET_KEY`
+     - `DATABASE_URL` (optional; defaults to SQLite)
+     - `FLASK_DEBUG=false`
+  4. Deploy and verify `/health`.
 - **Docker** (docker-compose.yml):
   ```yaml
   version: '3'

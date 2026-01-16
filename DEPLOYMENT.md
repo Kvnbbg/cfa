@@ -4,8 +4,19 @@ Quick summary
 
 - This app is a Flask application with a factory function `create_app()` exposed from `src.__init__`.
 - The repo root `main.py` imports `create_app()` and exposes `app` for WSGI servers.
+- The Vercel entry point is `app.py`, which also exposes `app` for serverless runtime.
 - The app listens on the port provided by the `PORT` environment variable (default 5000 locally).
 - A `Procfile` is included to run with Gunicorn: `web: gunicorn -b 0.0.0.0:$PORT "main:app"`.
+
+Vercel easy deploy
+
+- Click the Deploy button in README or import the repository in Vercel.
+- Vercel uses `vercel.json` to build with `@vercel/python` and route all traffic to `app.py`.
+- Environment variables to configure in Vercel:
+  - `SECRET_KEY` - required for production sessions/JWT.
+  - `DATABASE_URL` - optional. Defaults to SQLite if unset.
+  - `FLASK_DEBUG=false` - ensure production behavior.
+- Healthcheck: after deploy, visit `/health` to confirm the service is live.
 
 Railway settings
 
