@@ -416,6 +416,14 @@ body {
   overflow: hidden;
 }
 
+.hero .product-card {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: var(--shadow-glow, 0 18px 40px rgba(15, 23, 42, 0.16));
+  color: var(--text-inverse);
+  backdrop-filter: blur(12px);
+}
+
 .hero-particles {
   position: absolute;
   top: 0;
@@ -546,4 +554,3 @@ body {
     --border-secondary: #FFFFFF;
   }
 }
-
