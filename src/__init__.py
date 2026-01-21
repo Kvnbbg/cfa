@@ -1,14 +1,22 @@
+import logging
 import os
 from flask import Flask, send_from_directory
 from flask_cors import CORS
+from sqlalchemy.exc import SQLAlchemyError
 from .models import db
 from .routes.user import user_bp
 
-# Import de tous les modèles pour s'assurer qu'ils sont enregistrés
 from .models import (
     User, Product, Order, OrderItem, PriceHistory,
     CompetitorPrice, Review, Log, Coupon
 )
+
+LOGGER = logging.getLogger(__name__)
+DEFAULT_ENV = 'development'
+DEFAULT_DATABASE_FILENAME = 'app.db'
+DEFAULT_HEALTH_VERSION = '1.0.0'
+DEFAULT_ADMIN_EMAIL_ENV = 'ADMIN_EMAIL'
+DEFAULT_ADMIN_PASSWORD_ENV = 'ADMIN_PASSWORD'
 
 def create_app():
     """Factory pour créer l'application Flask"""
@@ -19,25 +27,27 @@ def create_app():
         static_url_path='/static'
     )
 
-    # Configuration
-    env = os.environ.get('FLASK_ENV', os.environ.get('ENV', 'development')).lower()
-    secret_key = os.environ.get('SECRET_KEY', 'cfa-dev-secret-key-2025')
-    if env == 'production' and secret_key == 'cfa-dev-secret-key-2025':
+    env = os.environ.get('FLASK_ENV', os.environ.get('ENV', DEFAULT_ENV)).lower()
+    secret_key = os.environ.get('SECRET_KEY')
+    if env == 'production' and not secret_key:
         raise RuntimeError('SECRET_KEY must be set for production environments')
+    if not secret_key:
+        secret_key = os.urandom(32).hex()
+        LOGGER.warning("SECRET_KEY not set; generated ephemeral key for this session.")
     app.config['SECRET_KEY'] = secret_key
-    # Prefer DATABASE_URL when provided (e.g., Railway Postgres). Otherwise fall back to local sqlite file.
     database_url = os.environ.get('DATABASE_URL')
     if database_url:
         app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
+        app.config['SQLALCHEMY_DATABASE_URI'] = (
+            f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', DEFAULT_DATABASE_FILENAME)}"
+        )
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         'pool_pre_ping': True,
         'pool_recycle': 300,
     }
 
-    # Activation de CORS pour permettre les requêtes cross-origin
     cors_origins = os.environ.get('CORS_ORIGINS', '')
     if cors_origins:
         origins = [origin.strip() for origin in cors_origins.split(',') if origin.strip()]
@@ -49,31 +59,39 @@ def create_app():
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
     app.config['SESSION_COOKIE_SECURE'] = env == 'production'
 
-    # Initialisation de la base de données
     db.init_app(app)
 
-    # Enregistrement des blueprints
     app.register_blueprint(user_bp, url_prefix='/api')
 
-    # Création des tables
     with app.app_context():
         db.create_all()
 
-        # Création d'un utilisateur admin par défaut si nécessaire (only when not in production)
         if env != 'production':
-            admin = User.query.filter_by(email='admin@cfa.com').first()
-            if not admin:
-                from src.models.base import UserRole
-                admin = User(
-                    email='admin@cfa.com',
-                    password='admin123',
-                    first_name='Admin',
-                    last_name='CFA',
-                    role=UserRole.ADMIN
+            admin_email = os.environ.get(DEFAULT_ADMIN_EMAIL_ENV)
+            admin_password = os.environ.get(DEFAULT_ADMIN_PASSWORD_ENV)
+            if not admin_email or not admin_password:
+                LOGGER.warning(
+                    "Admin bootstrap skipped; set %s and %s to enable.",
+                    DEFAULT_ADMIN_EMAIL_ENV,
+                    DEFAULT_ADMIN_PASSWORD_ENV,
                 )
-                db.session.add(admin)
-                db.session.commit()
-                print("Utilisateur admin créé: admin@cfa.com / admin123")
+            else:
+                try:
+                    admin = User.query.filter_by(email=admin_email).first()
+                    if not admin:
+                        from src.models.base import UserRole
+                        admin = User(
+                            email=admin_email,
+                            password=admin_password,
+                            first_name='Admin',
+                            last_name='CFA',
+                            role=UserRole.ADMIN
+                        )
+                        db.session.add(admin)
+                        db.session.commit()
+                        LOGGER.info("Admin user created for %s", admin_email)
+                except SQLAlchemyError:
+                    LOGGER.exception("Failed to create admin user during bootstrap.")
 
     @app.after_request
     def set_security_headers(response):
@@ -104,15 +122,13 @@ def create_app():
         if static_folder_path is None:
             return "Static folder not configured", 404
 
-        # Normaliser le chemin demandé et éviter toute échappée du répertoire statique
         requested_path = os.path.normpath(os.path.join(static_folder_path, path)) if path else None
         index_path = os.path.join(static_folder_path, 'index.html')
 
-        if path and requested_path.startswith(static_folder_path) and os.path.exists(requested_path):
+        if path and requested_path and requested_path.startswith(static_folder_path) and os.path.exists(requested_path):
             return send_from_directory(static_folder_path, path)
 
         if os.path.exists(index_path):
-            # Fallback SPA-friendly pour garantir une navigation résiliente
             return send_from_directory(static_folder_path, 'index.html')
 
         return "index.html not found", 404
@@ -123,7 +139,7 @@ def create_app():
         return {
             'status': 'healthy',
             'app': 'Caraïbes-France-Asie',
-            'version': '1.0.0',
+            'version': DEFAULT_HEALTH_VERSION,
             'database': 'connected'
         }
 
