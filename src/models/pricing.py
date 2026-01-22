@@ -3,11 +3,14 @@ Algorithme de tarification dynamique pour CFA
 Inclut réduction de prix, manipulation de prix, et optimisation écologique
 """
 
+import logging
 import math
 import random
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
+
+logger = logging.getLogger(__name__)
 
 @dataclass
 class PricingFactors:
@@ -447,9 +450,14 @@ class PricingEngine:
             try:
                 result = self.calculate_optimal_price(factors, algorithm)
                 results[product_id] = result
-            except Exception as e:
+            except (ValueError, KeyError, TypeError) as error:
                 # Log l'erreur et continuer avec les autres produits
-                print(f"Erreur lors du calcul de prix pour le produit {product_id}: {e}")
+                logger.warning(
+                    "Erreur lors du calcul de prix pour le produit %s: %s",
+                    product_id,
+                    error,
+                    exc_info=True
+                )
                 continue
         
         return results
@@ -464,9 +472,13 @@ class PricingEngine:
             try:
                 result = self.calculate_optimal_price(factors, algorithm_name)
                 scenarios[algorithm_name] = result
-            except Exception as e:
-                print(f"Erreur simulation {algorithm_name}: {e}")
+            except (ValueError, KeyError, TypeError) as error:
+                logger.warning(
+                    "Erreur simulation %s: %s",
+                    algorithm_name,
+                    error,
+                    exc_info=True
+                )
                 continue
         
         return scenarios
-
