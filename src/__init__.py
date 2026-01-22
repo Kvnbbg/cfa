@@ -1,5 +1,6 @@
 import logging
 import os
+import secrets
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 from sqlalchemy.exc import SQLAlchemyError
@@ -11,12 +12,15 @@ from .models import (
     CompetitorPrice, Review, Log, Coupon
 )
 
-LOGGER = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
+
 DEFAULT_ENV = 'development'
-DEFAULT_DATABASE_FILENAME = 'app.db'
-DEFAULT_HEALTH_VERSION = '1.0.0'
-DEFAULT_ADMIN_EMAIL_ENV = 'ADMIN_EMAIL'
-DEFAULT_ADMIN_PASSWORD_ENV = 'ADMIN_PASSWORD'
+ENV_PRODUCTION = 'production'
+DEFAULT_POOL_RECYCLE_SECONDS = 300
+DEFAULT_HSTS_MAX_AGE_SECONDS = 31536000
+DEFAULT_CORS_ORIGINS = ''
+ADMIN_EMAIL_ENV = 'DEFAULT_ADMIN_EMAIL'
+ADMIN_PASSWORD_ENV = 'DEFAULT_ADMIN_PASSWORD'
 
 def create_app():
     """Factory pour créer l'application Flask"""
@@ -27,13 +31,14 @@ def create_app():
         static_url_path='/static'
     )
 
+    # Configuration
     env = os.environ.get('FLASK_ENV', os.environ.get('ENV', DEFAULT_ENV)).lower()
     secret_key = os.environ.get('SECRET_KEY')
-    if env == 'production' and not secret_key:
+    if env == ENV_PRODUCTION and not secret_key:
         raise RuntimeError('SECRET_KEY must be set for production environments')
     if not secret_key:
-        secret_key = os.urandom(32).hex()
-        LOGGER.warning("SECRET_KEY not set; generated ephemeral key for this session.")
+        secret_key = secrets.token_hex(32)
+        logger.warning('SECRET_KEY not set; generated a temporary key for non-production use.')
     app.config['SECRET_KEY'] = secret_key
     database_url = os.environ.get('DATABASE_URL')
     if database_url:
@@ -45,14 +50,17 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         'pool_pre_ping': True,
-        'pool_recycle': 300,
+        'pool_recycle': DEFAULT_POOL_RECYCLE_SECONDS,
     }
 
-    cors_origins = os.environ.get('CORS_ORIGINS', '')
+    # Activation de CORS pour permettre les requêtes cross-origin
+    cors_origins = os.environ.get('CORS_ORIGINS', DEFAULT_CORS_ORIGINS)
     if cors_origins:
         origins = [origin.strip() for origin in cors_origins.split(',') if origin.strip()]
     else:
-        origins = ['*'] if env != 'production' else []
+        origins = ['*'] if env != ENV_PRODUCTION else []
+    if env == ENV_PRODUCTION and not origins:
+        logger.warning('CORS_ORIGINS is empty in production; no cross-origin requests will be allowed.')
     CORS(app, origins=origins)
 
     app.config['SESSION_COOKIE_HTTPONLY'] = True
@@ -66,32 +74,31 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-        if env != 'production':
-            admin_email = os.environ.get(DEFAULT_ADMIN_EMAIL_ENV)
-            admin_password = os.environ.get(DEFAULT_ADMIN_PASSWORD_ENV)
-            if not admin_email or not admin_password:
-                LOGGER.warning(
-                    "Admin bootstrap skipped; set %s and %s to enable.",
-                    DEFAULT_ADMIN_EMAIL_ENV,
-                    DEFAULT_ADMIN_PASSWORD_ENV,
+        # Création d'un utilisateur admin par défaut si nécessaire (only when not in production)
+        if env != ENV_PRODUCTION:
+            admin_email = os.environ.get(ADMIN_EMAIL_ENV, 'admin@cfa.com').strip()
+            admin_password = os.environ.get(ADMIN_PASSWORD_ENV)
+            if not admin_password:
+                logger.info(
+                    'Skipping default admin creation because the default admin password is not set.'
                 )
+            
+            elif not admin_email:
+                logger.warning('Skipping default admin creation because admin email is empty.')
             else:
-                try:
-                    admin = User.query.filter_by(email=admin_email).first()
-                    if not admin:
-                        from src.models.base import UserRole
-                        admin = User(
-                            email=admin_email,
-                            password=admin_password,
-                            first_name='Admin',
-                            last_name='CFA',
-                            role=UserRole.ADMIN
-                        )
-                        db.session.add(admin)
-                        db.session.commit()
-                        LOGGER.info("Admin user created for %s", admin_email)
-                except SQLAlchemyError:
-                    LOGGER.exception("Failed to create admin user during bootstrap.")
+                admin = User.query.filter_by(email=admin_email).first()
+                if not admin:
+                    from src.models.base import UserRole
+                    admin = User(
+                        email=admin_email,
+                        password=admin_password,
+                        first_name='Admin',
+                        last_name='CFA',
+                        role=UserRole.ADMIN
+                    )
+                    db.session.add(admin)
+                    db.session.commit()
+                    logger.info('Default admin user created for %s.', admin_email)
 
     @app.after_request
     def set_security_headers(response):
@@ -111,7 +118,10 @@ def create_app():
         response.headers.setdefault('Referrer-Policy', 'strict-origin-when-cross-origin')
         response.headers.setdefault('Permissions-Policy', 'geolocation=(), microphone=(), camera=()')
         if env == 'production':
-            response.headers.setdefault('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+            response.headers.setdefault(
+                'Strict-Transport-Security',
+                f'max-age={DEFAULT_HSTS_MAX_AGE_SECONDS}; includeSubDomains'
+            )
         return response
 
     @app.route('/', defaults={'path': ''})

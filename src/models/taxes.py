@@ -3,10 +3,11 @@ Calculateur de taxes pour CFA
 Support international avec serveur basé en France
 """
 
+import logging
 from typing import Dict, Optional, Tuple
 from dataclasses import dataclass
 from enum import Enum
-import json
+logger = logging.getLogger(__name__)
 
 class TaxRegion(Enum):
     FRANCE = "FR"
@@ -207,8 +208,13 @@ class TaxCalculator:
                     is_fair_trade=item.get('is_fair_trade', False)
                 )
                 results[item['id']] = calc
-            except Exception as e:
-                print(f"Erreur calcul taxes pour {item['id']}: {e}")
+            except (KeyError, ValueError, TypeError) as error:
+                logger.warning(
+                    "Erreur calcul taxes pour %s: %s",
+                    item.get('id', 'unknown'),
+                    error,
+                    exc_info=True
+                )
                 continue
         
         return results
@@ -311,4 +317,3 @@ class TaxCalculator:
                 "Traçabilité complète"
             ]
         }
-
