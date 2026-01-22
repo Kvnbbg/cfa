@@ -82,9 +82,9 @@ def create_app():
             admin_password = os.environ.get(ADMIN_PASSWORD_ENV)
             if not admin_password:
                 logger.info(
-                    'Skipping default admin creation because %s is not set.',
-                    ADMIN_PASSWORD_ENV
+                    'Skipping default admin creation because the default admin password is not set.'
                 )
+            
             elif not admin_email:
                 logger.warning('Skipping default admin creation because admin email is empty.')
             else:
