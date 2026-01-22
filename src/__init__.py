@@ -3,10 +3,10 @@ import os
 import secrets
 from flask import Flask, send_from_directory
 from flask_cors import CORS
+from sqlalchemy.exc import SQLAlchemyError
 from .models import db
 from .routes.user import user_bp
 
-# Import de tous les modèles pour s'assurer qu'ils sont enregistrés
 from .models import (
     User, Product, Order, OrderItem, PriceHistory,
     CompetitorPrice, Review, Log, Coupon
@@ -40,12 +40,13 @@ def create_app():
         secret_key = secrets.token_hex(32)
         logger.warning('SECRET_KEY not set; generated a temporary key for non-production use.')
     app.config['SECRET_KEY'] = secret_key
-    # Prefer DATABASE_URL when provided (e.g., Railway Postgres). Otherwise fall back to local sqlite file.
     database_url = os.environ.get('DATABASE_URL')
     if database_url:
         app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
+        app.config['SQLALCHEMY_DATABASE_URI'] = (
+            f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', DEFAULT_DATABASE_FILENAME)}"
+        )
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         'pool_pre_ping': True,
@@ -66,13 +67,10 @@ def create_app():
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
     app.config['SESSION_COOKIE_SECURE'] = env == 'production'
 
-    # Initialisation de la base de données
     db.init_app(app)
 
-    # Enregistrement des blueprints
     app.register_blueprint(user_bp, url_prefix='/api')
 
-    # Création des tables
     with app.app_context():
         db.create_all()
 
@@ -134,15 +132,13 @@ def create_app():
         if static_folder_path is None:
             return "Static folder not configured", 404
 
-        # Normaliser le chemin demandé et éviter toute échappée du répertoire statique
         requested_path = os.path.normpath(os.path.join(static_folder_path, path)) if path else None
         index_path = os.path.join(static_folder_path, 'index.html')
 
-        if path and requested_path.startswith(static_folder_path) and os.path.exists(requested_path):
+        if path and requested_path and requested_path.startswith(static_folder_path) and os.path.exists(requested_path):
             return send_from_directory(static_folder_path, path)
 
         if os.path.exists(index_path):
-            # Fallback SPA-friendly pour garantir une navigation résiliente
             return send_from_directory(static_folder_path, 'index.html')
 
         return "index.html not found", 404
@@ -153,7 +149,7 @@ def create_app():
         return {
             'status': 'healthy',
             'app': 'Caraïbes-France-Asie',
-            'version': '1.0.0',
+            'version': DEFAULT_HEALTH_VERSION,
             'database': 'connected'
         }
 
