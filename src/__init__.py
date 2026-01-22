@@ -15,6 +15,7 @@ from .models import (
 logger = logging.getLogger(__name__)
 
 DEFAULT_ENV = 'development'
+ENV_PRODUCTION = 'production'
 DEFAULT_POOL_RECYCLE_SECONDS = 300
 DEFAULT_HSTS_MAX_AGE_SECONDS = 31536000
 DEFAULT_CORS_ORIGINS = ''
@@ -33,7 +34,7 @@ def create_app():
     # Configuration
     env = os.environ.get('FLASK_ENV', os.environ.get('ENV', DEFAULT_ENV)).lower()
     secret_key = os.environ.get('SECRET_KEY')
-    if env == 'production' and not secret_key:
+    if env == ENV_PRODUCTION and not secret_key:
         raise RuntimeError('SECRET_KEY must be set for production environments')
     if not secret_key:
         secret_key = secrets.token_hex(32)
@@ -56,7 +57,9 @@ def create_app():
     if cors_origins:
         origins = [origin.strip() for origin in cors_origins.split(',') if origin.strip()]
     else:
-        origins = ['*'] if env != 'production' else []
+        origins = ['*'] if env != ENV_PRODUCTION else []
+    if env == ENV_PRODUCTION and not origins:
+        logger.warning('CORS_ORIGINS is empty in production; no cross-origin requests will be allowed.')
     CORS(app, origins=origins)
 
     app.config['SESSION_COOKIE_HTTPONLY'] = True
@@ -74,14 +77,16 @@ def create_app():
         db.create_all()
 
         # Création d'un utilisateur admin par défaut si nécessaire (only when not in production)
-        if env != 'production':
-            admin_email = os.environ.get(ADMIN_EMAIL_ENV, 'admin@cfa.com')
+        if env != ENV_PRODUCTION:
+            admin_email = os.environ.get(ADMIN_EMAIL_ENV, 'admin@cfa.com').strip()
             admin_password = os.environ.get(ADMIN_PASSWORD_ENV)
             if not admin_password:
                 logger.info(
                     'Skipping default admin creation because %s is not set.',
                     ADMIN_PASSWORD_ENV
                 )
+            elif not admin_email:
+                logger.warning('Skipping default admin creation because admin email is empty.')
             else:
                 admin = User.query.filter_by(email=admin_email).first()
                 if not admin:
