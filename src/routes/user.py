@@ -7,20 +7,36 @@ from ..models import User
 
 user_bp = Blueprint('user', __name__)
 
+AUTH_HEADER_PREFIX = 'Bearer '
+HTTP_BAD_REQUEST = 400
+HTTP_UNAUTHORIZED = 401
+HTTP_INTERNAL_SERVER_ERROR = 500
+
+
+def error_response(message, status_code):
+    """Return a standardized JSON error response."""
+    return jsonify({'error': message}), status_code
+
 
 def require_auth(func):
-    """Decorator ensuring that the requester provides a valid JWT token."""
+    """Ensure the requester provides a valid JWT token before proceeding."""
 
     @wraps(func)
     def wrapper(*args, **kwargs):
         auth_header = request.headers.get('Authorization', '')
-        if not auth_header.startswith('Bearer '):
-            return jsonify({'error': 'Authorization header missing or malformed'}), 401
+        if not auth_header.startswith(AUTH_HEADER_PREFIX):
+            return error_response('Authorization header missing or malformed', HTTP_UNAUTHORIZED)
 
         token = auth_header.split(' ', 1)[1].strip()
-        user = User.verify_token(token) if token else None
+        if not token:
+            return error_response('Invalid or expired token', HTTP_UNAUTHORIZED)
+
+        try:
+            user = User.verify_token(token)
+        except Exception:
+            return error_response('Invalid or expired token', HTTP_UNAUTHORIZED)
         if not user:
-            return jsonify({'error': 'Invalid or expired token'}), 401
+            return error_response('Invalid or expired token', HTTP_UNAUTHORIZED)
 
         g.current_user = user
         return func(*args, **kwargs)
@@ -30,22 +46,39 @@ def require_auth(func):
 
 @user_bp.route('/login', methods=['POST'])
 def login():
-    """Login endpoint."""
-    data = request.get_json(silent=True) or {}
+    """Authenticate a user and return a JWT with profile details."""
+    data = request.get_json(silent=True)
+    if data is None:
+        data = {}
+    if not isinstance(data, dict):
+        return error_response('Invalid request payload', HTTP_BAD_REQUEST)
 
     email = data.get('email')
     password = data.get('password')
+    if isinstance(email, str):
+        email = email.strip()
+    if isinstance(password, str):
+        password = password.strip()
 
     if not email or not password:
-        return jsonify({'error': 'Missing email or password'}), 400
+        return error_response('Missing email or password', HTTP_BAD_REQUEST)
 
-    user = User.query.filter_by(email=email).first()
+    try:
+        user = User.query.filter_by(email=email).first()
+    except Exception:
+        return error_response('Unable to authenticate at this time', HTTP_INTERNAL_SERVER_ERROR)
     if not user or not user.check_password(password):
-        return jsonify({'error': 'Invalid email or password'}), 401
+        return error_response('Invalid email or password', HTTP_UNAUTHORIZED)
 
-    token = user.generate_token()
-    if isinstance(token, bytes):  # PyJWT < 2.0 returns bytes
+    try:
+        token = user.generate_token()
+    except Exception:
+        return error_response('Unable to authenticate at this time', HTTP_INTERNAL_SERVER_ERROR)
+    if isinstance(token, bytes):
         token = token.decode('utf-8')
+    if not token:
+        return error_response('Unable to authenticate at this time', HTTP_INTERNAL_SERVER_ERROR)
+    role_value = user.role.value if getattr(user, 'role', None) else None
     return jsonify({
         'token': token,
         'user': {
@@ -53,7 +86,7 @@ def login():
             'email': user.email,
             'first_name': user.first_name,
             'last_name': user.last_name,
-            'role': user.role.value
+            'role': role_value
         }
     })
 
@@ -61,6 +94,8 @@ def login():
 @user_bp.route('/profile', methods=['GET'])
 @require_auth
 def get_profile():
-    """Get user profile endpoint."""
+    """Return the authenticated user's profile."""
     user = g.current_user
+    if not user:
+        return error_response('Invalid or expired token', HTTP_UNAUTHORIZED)
     return jsonify(user.to_dict()), 200
