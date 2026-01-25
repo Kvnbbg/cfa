@@ -32,409 +32,338 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="navbar" id="navbar">
+    <header class="navbar" id="navbar">
         <div class="nav-container">
-            <!-- Logo -->
-            <div class="nav-logo">
-                <img src="/static/assets/cfa_logo.svg" alt="CFA" class="logo">
-                <span class="logo-text">CFA</span>
-            </div>
-
-            <!-- Language Selector -->
-            <div class="language-selector">
-                <button class="lang-btn" data-lang="fr">🇫🇷</button>
-                <button class="lang-btn" data-lang="en">🇺🇸</button>
-                <button class="lang-btn" data-lang="ko">🇰🇷</button>
-                <button class="lang-btn" data-lang="zh">🇨🇳</button>
-            </div>
-
-            <!-- Navigation Links -->
-            <div class="nav-links">
-                <a href="#home" class="nav-link active" data-i18n="home">Accueil</a>
-                <a href="#products" class="nav-link" data-i18n="products">Produits</a>
-                <a href="#recipes" class="nav-link" data-i18n="recipes">Recettes</a>
-                <a href="#about" class="nav-link" data-i18n="about">À propos</a>
-                <a href="#contact" class="nav-link" data-i18n="contact">Contact</a>
-            </div>
-
-            <!-- User Actions -->
-            <div class="nav-actions">
-                <!-- Theme Toggle -->
-                <button class="theme-toggle" id="theme-toggle" title="Changer de thème">
-                    <i class="fas fa-sun light-icon"></i>
-                    <i class="fas fa-moon dark-icon"></i>
-                </button>
-
-                <!-- Search -->
-                <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Rechercher..." data-i18n-placeholder="search_placeholder">
-                    <button class="search-btn">
-                        <i class="fas fa-search"></i>
-                    </button>
+            <div class="nav-left">
+                <div class="nav-logo">
+                    <img src="/static/assets/cfa_logo.svg" alt="CFA" class="logo">
+                    <span class="logo-text">CFA</span>
                 </div>
-
-                <!-- Cart -->
-                <button class="cart-btn">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">0</span>
-                </button>
-
-                <!-- User Menu -->
-                <div class="user-menu">
-                    <button class="user-btn">
-                        <i class="fas fa-user"></i>
-                    </button>
-                    <div class="user-dropdown">
-                        <a href="#login" data-i18n="login">Connexion</a>
-                        <a href="#register" data-i18n="register">Inscription</a>
-                    </div>
-                </div>
-
-                <!-- Mobile Menu Toggle -->
-                <button class="mobile-menu-toggle">
+                <button class="mobile-menu-toggle" aria-label="Ouvrir le menu principal">
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
             </div>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-background">
-            <div class="hero-particles"></div>
-            <div class="hero-waves"></div>
-        </div>
-        
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1 class="hero-title">
-                    <span class="title-line" data-i18n="welcome_message">Bienvenue sur Caraïbes-France-Asie</span>
-                    <span class="title-highlight">CFA</span>
-                </h1>
-                <p class="hero-subtitle" data-i18n="tagline">
-                    Chaîne d'approvisionnement de la ferme à la table, enracinée dans l'écologie
-                </p>
-                <p class="hero-description" data-i18n="support_local">
-                    Soutenez les producteurs locaux contre les grandes surfaces comme Carrefour et Leclerc
-                </p>
-                
-                <!-- CTA Buttons -->
-                <div class="hero-cta">
-                    <button class="btn btn-primary btn-animated" id="easy-signup-btn">
-                        <span data-i18n="register">Inscription Facile</span>
-                        <i class="fas fa-arrow-right"></i>
+            <nav class="nav-center" aria-label="Navigation principale">
+                <div class="nav-links">
+                    <a href="#home" class="nav-link active" data-i18n="home">Accueil</a>
+                    <a href="#products" class="nav-link" data-i18n="products">Produits</a>
+                    <a href="#recipes" class="nav-link" data-i18n="recipes">Recettes</a>
+                    <a href="#about" class="nav-link" data-i18n="about">À propos</a>
+                    <a href="#contact" class="nav-link" data-i18n="contact">Contact</a>
+                </div>
+            </nav>
+
+            <div class="nav-right">
+                <div class="nav-utilities">
+                    <button class="theme-toggle" id="theme-toggle" title="Changer de thème">
+                        <i class="fas fa-sun light-icon"></i>
+                        <i class="fas fa-moon dark-icon"></i>
                     </button>
-                    <button class="btn btn-secondary btn-animated">
-                        <span data-i18n="products">Découvrir</span>
-                        <i class="fas fa-compass"></i>
-                    </button>
-                </div>
 
-                <!-- Trust Indicators -->
-                <div class="trust-indicators">
-                    <div class="trust-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <span data-i18n="quality_guarantee">Qualité garantie</span>
+                    <div class="language-selector">
+                        <button class="lang-btn" data-lang="fr">🇫🇷</button>
+                        <button class="lang-btn" data-lang="en">🇺🇸</button>
+                        <button class="lang-btn" data-lang="ko">🇰🇷</button>
+                        <button class="lang-btn" data-lang="zh">🇨🇳</button>
                     </div>
-                    <div class="trust-item">
-                        <i class="fas fa-leaf"></i>
-                        <span>Écologique</span>
-                    </div>
-                    <div class="trust-item">
-                        <i class="fas fa-handshake"></i>
-                        <span data-i18n="fair_trade">Commerce équitable</span>
-                    </div>
-                </div>
 
-                <div class="impact-stats" data-animate="rise">
-                    <div class="impact-card">
-                        <span class="impact-label">CO₂ évité</span>
-                        <span class="impact-value" data-counter="128">0</span>
-                        <span class="impact-unit">kg</span>
-                    </div>
-                    <div class="impact-card">
-                        <span class="impact-label">Producteurs actifs</span>
-                        <span class="impact-value" data-counter="46">0</span>
-                        <span class="impact-unit">réseaux</span>
-                    </div>
-                    <div class="impact-card">
-                        <span class="impact-label">Livraisons/24h</span>
-                        <span class="impact-value" data-counter="214">0</span>
-                        <span class="impact-unit">trajets</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Hero Visual -->
-            <div class="hero-visual">
-                <div class="product-showcase">
-                    <div class="product-card floating">
-                        <img src="/static/assets/icon_spices.png" alt="Épices">
-                        <span>Épices authentiques</span>
-                    </div>
-                    <div class="product-card floating" style="animation-delay: 0.5s;">
-                        <img src="/static/assets/icon_food.png" alt="Produits frais">
-                        <span>Produits frais</span>
-                    </div>
-                    <div class="product-card floating" style="animation-delay: 1s;">
-                        <img src="/static/assets/icon_herbs.png" alt="Herbes médicinales">
-                        <span>Herbes médicinales</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="scroll-indicator">
-            <div class="scroll-arrow">
-                <i class="fas fa-chevron-down"></i>
-            </div>
-        </div>
-    </section>
-
-    <!-- Easy Signup Modal (Dark Pattern Optimized) -->
-    <div id="signup-modal" class="modal">
-        <div class="modal-content signup-modal">
-            <div class="modal-header">
-                <h2>Rejoignez la révolution CFA</h2>
-                <button class="modal-close">&times;</button>
-            </div>
-            
-            <div class="signup-benefits">
-                <div class="benefit-item">
-                    <i class="fas fa-gift"></i>
-                    <span>10€ offerts à l'inscription</span>
-                </div>
-                <div class="benefit-item">
-                    <i class="fas fa-shipping-fast"></i>
-                    <span>Livraison gratuite dès 30€</span>
-                </div>
-                <div class="benefit-item">
-                    <i class="fas fa-star"></i>
-                    <span>Accès aux produits exclusifs</span>
-                </div>
-            </div>
-
-            <form class="signup-form" id="easy-signup-form">
-                <div class="form-group">
-                    <input type="email" placeholder="Votre email" required class="form-input">
-                    <i class="fas fa-envelope form-icon"></i>
-                </div>
-                
-                <div class="form-group">
-                    <input type="password" placeholder="Mot de passe" required class="form-input">
-                    <i class="fas fa-lock form-icon"></i>
-                </div>
-
-                <div class="form-options">
-                    <label class="checkbox-container">
-                        <input type="checkbox" checked>
-                        <span class="checkmark"></span>
-                        <span class="checkbox-text">Recevoir les offres exclusives</span>
-                    </label>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-full">
-                    <span>Créer mon compte</span>
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-
-                <div class="social-signup">
-                    <p>Ou inscrivez-vous avec :</p>
-                    <div class="social-buttons">
-                        <button class="social-btn google">
-                            <i class="fab fa-google"></i>
-                            Google
+                    <div class="user-menu">
+                        <button class="user-btn" aria-label="Ouvrir le profil">
+                            <i class="fas fa-user"></i>
                         </button>
-                        <button class="social-btn facebook">
-                            <i class="fab fa-facebook"></i>
-                            Facebook
+                        <div class="user-dropdown">
+                            <a href="#login" data-i18n="login">Connexion</a>
+                            <a href="#register" data-i18n="register">Inscription</a>
+                            <a href="#logout">Déconnexion</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary nav-primary-action" type="button">
+                    <i class="fas fa-bolt"></i>
+                    Accès rapide
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <section id="home" class="dashboard-hero">
+            <div class="container dashboard-hero-grid">
+                <div class="dashboard-hero-copy">
+                    <span class="eyebrow">Tableau de bord</span>
+                    <h1 class="dashboard-title" data-i18n="welcome_message">CFA Delivery Control Center</h1>
+                    <p class="dashboard-subtitle" data-i18n="tagline">
+                        Suivez la chaîne d'approvisionnement, les livraisons et l'impact durable en un coup d'œil.
+                    </p>
+                    <p class="dashboard-description" data-i18n="support_local">
+                        Tout est regroupé par modules : opérations, catalogue et communauté, pour une lecture rapide.
+                    </p>
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary" id="easy-signup-btn">
+                            <span data-i18n="register">Inscription Facile</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button class="btn btn-secondary">
+                            <span data-i18n="products">Découvrir</span>
+                            <i class="fas fa-compass"></i>
                         </button>
                     </div>
-                </div>
-            </form>
 
-            <div class="signup-footer">
-                <p>Déjà membre ? <a href="#login">Connectez-vous</a></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Pourquoi choisir CFA ?</h2>
-                <p class="section-subtitle">Une alternative éthique aux grandes surfaces</p>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-card" data-aos="fade-up">
-                    <div class="feature-icon">
-                        <i class="fas fa-route"></i>
-                    </div>
-                    <h3>Circuit Direct</h3>
-                    <p>Du producteur au consommateur, sans intermédiaire. Éliminez les marges excessives des supermarchés.</p>
-                </div>
-
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-icon">
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                    <h3>Écologique</h3>
-                    <p>Produits bio, commerce équitable, emballages durables. Préservez la planète avec chaque achat.</p>
-                </div>
-
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-icon">
-                        <i class="fas fa-globe-asia"></i>
-                    </div>
-                    <h3>Multiculturel</h3>
-                    <p>Découvrez les saveurs authentiques des Caraïbes, de France, de Corée, d'Inde et de Chine.</p>
-                </div>
-
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Prix Intelligents</h3>
-                    <p>Algorithmes de tarification équitable. Économisez jusqu'à 30% par rapport aux grandes surfaces.</p>
-                </div>
-
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="feature-icon">
-                        <i class="fas fa-gamepad"></i>
-                    </div>
-                    <h3>Gamification</h3>
-                    <p>Gagnez des points, débloquez des badges, obtenez des récompenses à chaque achat responsable.</p>
-                </div>
-
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Sécurisé</h3>
-                    <p>Conforme ANSSI.fr, surveillance 24/7, protection des données. Votre sécurité est notre priorité.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Supply Chain Visibility Section -->
-    <section id="supply-chain" class="section">
-        <h2>Visibilité de la chaîne d'approvisionnement</h2>
-        <p>
-            Suivez vos flux logistiques en temps réel avec des indicateurs clairs sur les stocks,
-            les expéditions et la performance durable.
-        </p>
-        <div class="card-grid">
-            <div class="card">
-                <h3>Stocks par entrepôt</h3>
-                <p>Surveillez les niveaux critiques et anticipez les ruptures pour chaque région.</p>
-            </div>
-            <div class="card">
-                <h3>Flux entrants et sortants</h3>
-                <p>Analysez les mouvements pour optimiser les délais et réduire le gaspillage.</p>
-            </div>
-            <div class="card">
-                <h3>Traçabilité responsable</h3>
-                <p>Visualisez l'impact carbone et la conformité des fournisseurs partenaires.</p>
-            </div>
-        </div>
-
-        <div class="supply-dashboard" data-animate="rise">
-            <div class="dashboard-header">
-                <div>
-                    <h3>Tableau de conduite logistique</h3>
-                    <p>Interactions temps réel pour piloter la sécurité, l'énergie et les conditions extrêmes.</p>
-                </div>
-                <span class="status-pill pulse">En direct</span>
-            </div>
-
-            <div class="dashboard-grid">
-                <div class="dashboard-card">
-                    <h4>Whiteout braking display</h4>
-                    <p>Simulation du freinage en visibilité réduite pour sécuriser les convois.</p>
-                    <div class="braking-display">
-                        <div class="braking-bar">
-                            <span class="braking-fill" data-brake-fill></span>
+                    <div class="impact-stats" data-animate="rise">
+                        <div class="impact-card">
+                            <span class="impact-label">CO₂ évité</span>
+                            <span class="impact-value" data-counter="128">0</span>
+                            <span class="impact-unit">kg</span>
                         </div>
-                        <div class="braking-meta">
-                            <span class="brake-value" data-brake-value>45%</span>
-                            <span class="brake-state" data-brake-state>Stabilisé</span>
+                        <div class="impact-card">
+                            <span class="impact-label">Producteurs actifs</span>
+                            <span class="impact-value" data-counter="46">0</span>
+                            <span class="impact-unit">réseaux</span>
+                        </div>
+                        <div class="impact-card">
+                            <span class="impact-label">Livraisons/24h</span>
+                            <span class="impact-value" data-counter="214">0</span>
+                            <span class="impact-unit">trajets</span>
                         </div>
                     </div>
-                    <label class="range-label" for="brake-range">Pression de freinage</label>
-                    <input id="brake-range" class="brake-range" type="range" min="0" max="100" value="45">
-                    <label class="toggle">
-                        <input type="checkbox" class="toggle-input" data-whiteout-toggle>
-                        <span class="toggle-slider"></span>
-                        <span class="toggle-text">Mode whiteout</span>
-                    </label>
-                    <button class="btn btn-secondary btn-animated brake-boost" type="button">
-                        <i class="fas fa-bolt"></i>
-                        Stabiliser
-                    </button>
                 </div>
 
-                <div class="dashboard-card">
-                    <h4>Énergie & durabilité</h4>
-                    <p>Optimisation automatique pour réduire l'empreinte carbone.</p>
-                    <div class="meter">
-                        <div class="meter-track">
-                            <span class="meter-fill" style="width: 72%;"></span>
-                        </div>
-                        <div class="meter-meta">
-                            <span>Score vert</span>
-                            <strong>72%</strong>
+                <aside class="dashboard-hero-panel">
+                    <div class="panel-card">
+                        <h3>Vue rapide</h3>
+                        <ul class="panel-list">
+                            <li><strong>94%</strong> de commandes en SLA</li>
+                            <li><strong>12</strong> expéditions prioritaires</li>
+                            <li><strong>3</strong> alertes de stock à surveiller</li>
+                        </ul>
+                    </div>
+                    <div class="panel-card panel-card-highlight">
+                        <h3>Actions critiques</h3>
+                        <p>Centralisez les décisions clés avant les pics de livraison.</p>
+                        <div class="panel-actions">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-bell"></i>
+                                Activer les alertes
+                            </button>
+                            <button class="btn btn-secondary" type="button">
+                                <i class="fas fa-chart-line"></i>
+                                Voir les KPI
+                            </button>
                         </div>
                     </div>
-                    <div class="chip-group">
-                        <button class="chip" type="button" data-chip="eco">Eco-priorité</button>
-                        <button class="chip" type="button" data-chip="balance">Équilibré</button>
-                        <button class="chip" type="button" data-chip="speed">Vitesse</button>
+                </aside>
+            </div>
+        </section>
+
+        <!-- Produits Section -->
+        <section id="products" class="dashboard-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Produits & marchés</h2>
+                    <p class="section-subtitle">Regroupez les informations clés du catalogue et des partenaires.</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card" data-aos="fade-up">
+                        <div class="feature-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h3>Circuit Direct</h3>
+                        <p>Du producteur au consommateur, sans intermédiaire. Éliminez les marges excessives des supermarchés.</p>
+                    </div>
+
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="feature-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3>Écologique</h3>
+                        <p>Produits bio, commerce équitable, emballages durables. Préservez la planète avec chaque achat.</p>
+                    </div>
+
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="feature-icon">
+                            <i class="fas fa-globe-asia"></i>
+                        </div>
+                        <h3>Multiculturel</h3>
+                        <p>Découvrez les saveurs authentiques des Caraïbes, de France, de Corée, d'Inde et de Chine.</p>
+                    </div>
+
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Prix Intelligents</h3>
+                        <p>Algorithmes de tarification équitable. Économisez jusqu'à 30% par rapport aux grandes surfaces.</p>
+                    </div>
+
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="feature-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3>Gamification</h3>
+                        <p>Gagnez des points, débloquez des badges, obtenez des récompenses à chaque achat responsable.</p>
+                    </div>
+
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Sécurisé</h3>
+                        <p>Conforme ANSSI.fr, surveillance 24/7, protection des données. Votre sécurité est notre priorité.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="recipes" class="dashboard-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Recettes & inspirations</h2>
+                    <p class="section-subtitle">Une lecture rapide des tendances, stocks et recommandations culinaires.</p>
+                </div>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Top recettes du jour</h3>
+                        <p>Visualisez les recettes les plus demandées et adaptez vos approvisionnements.</p>
+                        <button class="btn btn-secondary" type="button">Voir les recettes</button>
+                    </div>
+                    <div class="card">
+                        <h3>Marchés prioritaires</h3>
+                        <p>Identifiez les régions à forte demande pour optimiser la distribution.</p>
+                        <button class="btn btn-secondary" type="button">Analyser la demande</button>
+                    </div>
+                    <div class="card">
+                        <h3>Alertes ingrédients</h3>
+                        <p>Recevez les alertes sur les ruptures potentielles et les substitutions.</p>
+                        <button class="btn btn-secondary" type="button">Configurer les alertes</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Supply Chain Visibility Section -->
+        <section id="about" class="dashboard-section">
+            <div class="container">
+                <div class="section-header section-header-left">
+                    <div>
+                        <h2 class="section-title">Opérations & traçabilité</h2>
+                        <p class="section-subtitle">
+                            Suivez vos flux logistiques en temps réel avec des indicateurs clairs sur les stocks,
+                            les expéditions et la performance durable.
+                        </p>
+                    </div>
+                </div>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Stocks par entrepôt</h3>
+                        <p>Surveillez les niveaux critiques et anticipez les ruptures pour chaque région.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Flux entrants et sortants</h3>
+                        <p>Analysez les mouvements pour optimiser les délais et réduire le gaspillage.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Traçabilité responsable</h3>
+                        <p>Visualisez l'impact carbone et la conformité des fournisseurs partenaires.</p>
                     </div>
                 </div>
 
-                <div class="dashboard-card">
-                    <h4>Rythme des expéditions</h4>
-                    <p>Visibilité sur les flux entrants/sortants avec alertes.</p>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <span class="timeline-dot"></span>
-                            <div>
-                                <strong>08:30</strong>
-                                <p>Conteneurs refroidis - route Caraïbes</p>
+                <div class="supply-dashboard" data-animate="rise">
+                    <div class="dashboard-header">
+                        <div>
+                            <h3>Tableau de conduite logistique</h3>
+                            <p>Interactions temps réel pour piloter la sécurité, l'énergie et les conditions extrêmes.</p>
+                        </div>
+                        <span class="status-pill pulse">En direct</span>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <h4>Whiteout braking display</h4>
+                            <p>Simulation du freinage en visibilité réduite pour sécuriser les convois.</p>
+                            <div class="braking-display">
+                                <div class="braking-bar">
+                                    <span class="braking-fill" data-brake-fill></span>
+                                </div>
+                                <div class="braking-meta">
+                                    <span class="brake-value" data-brake-value>45%</span>
+                                    <span class="brake-state" data-brake-state>Stabilisé</span>
+                                </div>
+                            </div>
+                            <label class="range-label" for="brake-range">Pression de freinage</label>
+                            <input id="brake-range" class="brake-range" type="range" min="0" max="100" value="45">
+                            <label class="toggle">
+                                <input type="checkbox" class="toggle-input" data-whiteout-toggle>
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-text">Mode whiteout</span>
+                            </label>
+                            <button class="btn btn-secondary btn-animated brake-boost" type="button">
+                                <i class="fas fa-bolt"></i>
+                                Stabiliser
+                            </button>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <h4>Énergie & durabilité</h4>
+                            <p>Optimisation automatique pour réduire l'empreinte carbone.</p>
+                            <div class="meter">
+                                <div class="meter-track">
+                                    <span class="meter-fill" style="width: 72%;"></span>
+                                </div>
+                                <div class="meter-meta">
+                                    <span>Score vert</span>
+                                    <strong>72%</strong>
+                                </div>
+                            </div>
+                            <div class="chip-group">
+                                <button class="chip" type="button" data-chip="eco">Eco-priorité</button>
+                                <button class="chip" type="button" data-chip="balance">Équilibré</button>
+                                <button class="chip" type="button" data-chip="speed">Vitesse</button>
                             </div>
                         </div>
-                        <div class="timeline-item">
-                            <span class="timeline-dot"></span>
-                            <div>
-                                <strong>11:15</strong>
-                                <p>Réacheminement express - hubs France</p>
+
+                        <div class="dashboard-card">
+                            <h4>Rythme des expéditions</h4>
+                            <p>Visibilité sur les flux entrants/sortants avec alertes.</p>
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <span class="timeline-dot"></span>
+                                    <div>
+                                        <strong>08:30</strong>
+                                        <p>Conteneurs refroidis - route Caraïbes</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="timeline-dot"></span>
+                                    <div>
+                                        <strong>11:15</strong>
+                                        <p>Réacheminement express - hubs France</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="timeline-dot"></span>
+                                    <div>
+                                        <strong>14:10</strong>
+                                        <p>Départ maritime - corridor Asie</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="timeline-item">
-                            <span class="timeline-dot"></span>
-                            <div>
-                                <strong>14:10</strong>
-                                <p>Départ maritime - corridor Asie</p>
-                            </div>
+                            <button class="btn btn-primary btn-animated" type="button" data-alert-btn>
+                                <i class="fas fa-bell"></i>
+                                Activer les alertes
+                            </button>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-animated" type="button" data-alert-btn>
-                        <i class="fas fa-bell"></i>
-                        Activer les alertes
-                    </button>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Contact & Support Section -->
-    <section id="contact" class="contact">
+        <!-- Contact & Support Section -->
+        <section id="contact" class="contact dashboard-section">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Contact & Support</h2>
@@ -570,7 +499,76 @@
                 </div>
             </div>
         </div>
-    </section>
+        </section>
+    </main>
+
+    <!-- Easy Signup Modal (Dark Pattern Optimized) -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content signup-modal">
+            <div class="modal-header">
+                <h2>Rejoignez la révolution CFA</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+
+            <div class="signup-benefits">
+                <div class="benefit-item">
+                    <i class="fas fa-gift"></i>
+                    <span>10€ offerts à l'inscription</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-shipping-fast"></i>
+                    <span>Livraison gratuite dès 30€</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-star"></i>
+                    <span>Accès aux produits exclusifs</span>
+                </div>
+            </div>
+
+            <form class="signup-form" id="easy-signup-form">
+                <div class="form-group">
+                    <input type="email" placeholder="Votre email" required class="form-input">
+                    <i class="fas fa-envelope form-icon"></i>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" placeholder="Mot de passe" required class="form-input">
+                    <i class="fas fa-lock form-icon"></i>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" checked>
+                        <span class="checkmark"></span>
+                        <span class="checkbox-text">Recevoir les offres exclusives</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">
+                    <span>Créer mon compte</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <div class="social-signup">
+                    <p>Ou inscrivez-vous avec :</p>
+                    <div class="social-buttons">
+                        <button class="social-btn google">
+                            <i class="fab fa-google"></i>
+                            Google
+                        </button>
+                        <button class="social-btn facebook">
+                            <i class="fab fa-facebook"></i>
+                            Facebook
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="signup-footer">
+                <p>Déjà membre ? <a href="#login">Connectez-vous</a></p>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
